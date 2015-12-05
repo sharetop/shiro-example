@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:tx="http://www.springframework.org/schema/tx" 
+    xmlns:aop="http://www.springframework.org/schema/aop" 
+    xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+    xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd  
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd  
+            http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd    
+            http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.1.xsd
+            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.1.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.1.xsd
+			http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo-1.8.xsd 
+			http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd">
+
+	<mvc:annotation-driven />
+    <mvc:default-servlet-handler/>
+    
+    <aop:aspectj-autoproxy proxy-target-class="true" />
+    
+    <context:component-scan base-package="cn.chinaunicom.woplus.shiro.HelloWorld" />
+   
+   
+    <!-- 第四步：增加真正的shiroFilter -->
+	<!--  
+	<bean id="woplusInnerRealm" class="cn.chinaunicom.woplus.shiro.realm.WoPlusInnerRealm"
+    	p:authBaseURL="http://api.open.wo.cn/pservice">
+    </bean>
+
+	<bean id="authenticator" class="cn.chinaunicom.woplus.shiro.authenticator.ModularRealmAuthenticator">
+    	<property name="authenticationStrategy">
+    		<bean class="org.apache.shiro.authc.pam.FirstSuccessfulStrategy" />
+    	</property>
+    </bean>
+    
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+    	<property name="authenticator" ref="authenticator" />
+    	<property name="realms">
+    	<list>
+    		<ref bean="woplusInnerRealm" />
+    	</list>
+    	</property>
+	</bean>
+	-->
+	
+	<bean id="helloWorldRealm" class="cn.chinaunicom.woplus.shiro.HelloWorld.HelloWorldRealm"/>
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<property name="realms">
+    	<list>
+    		<ref bean="helloWorldRealm" />
+    	</list>
+    	</property>
+	</bean>
+	
+	<bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+    		<property name="securityManager" ref="securityManager"/>
+	</bean>
+
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+    	<property name="securityManager" ref="securityManager" />
+		<property name="loginUrl" value="/login" />
+		<property name="filters">
+		    <map/>
+		</property>
+		<property name="filterChainDefinitions">
+			<value>
+				/login = anon
+				/** = user
+			</value>
+		</property>
+	</bean>
+	
+	<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" />
+    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+    	<property name="messageConverters">
+	     <list>
+  			 <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+   				<property name="supportedMediaTypes" value="application/json;charset=utf-8" />
+			</bean>
+ 		 </list>
+	</property>
+    </bean>
+    
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix">
+            <value>/WEB-INF/jsp/</value>
+        </property>
+        <property name="suffix">
+            <value>.jsp</value>
+        </property>
+    </bean>
+    
+</beans>
