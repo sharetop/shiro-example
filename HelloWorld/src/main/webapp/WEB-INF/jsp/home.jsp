@@ -27,8 +27,11 @@
 <h4>管理员才能看到我</h4>
 </shiro:hasRole>
 
-<shiro:hasPermission name="system:view">
+<h2 style="blue">${channel_message}</h2>
+
+<shiro:hasPermission name="system:view:bbb">
 需要有system:view权限
+
 </shiro:hasPermission>
 
 </p>

@@ -17,23 +17,31 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class HelloController {
 
-	
+	//@RequiresRoles("manager1111")
 	@RequestMapping(value="/home"
 		,method=RequestMethod.GET
 		,headers = {"Accept=text/html"})
 	public ModelAndView showHello(){
 		ModelAndView mv = new ModelAndView();
 		
+		String chn = "----";
 		String cnt = RandomUtils.nextLong()+"";
 		
+		Subject subject = SecurityUtils.getSubject();
+		if( subject.isPermitted("system:view:bbb,ccc") ){
+			chn="bbb channel";
+		}
+		
 		mv.addObject("message", cnt);
+		mv.addObject("channel_message",chn);
+		
 		
 		mv.setViewName("home");
 		return mv;
 	}
 	
-	//@RequiresRoles("administrator")
-	@RequiresPermissions("system:admin")
+	@RequiresRoles("administrator")
+	//@RequiresPermissions("channel:user:edit")
 	@RequestMapping(value="/admin"
 			,method=RequestMethod.GET
 			,headers = {"Accept=text/html"})
@@ -57,6 +65,7 @@ public class HelloController {
 		return mv;
 	}
 	
+	//@RequiresRoles("administrator")
 	@RequestMapping(value="/logout"
 			,method=RequestMethod.GET
 			,headers = {"Accept=text/html"})
@@ -68,6 +77,7 @@ public class HelloController {
 			mv.setViewName("login");
 			return mv;
 		}
+	
 	
 	@RequestMapping(value="/login"
 			,method=RequestMethod.POST

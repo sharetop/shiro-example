@@ -1,0 +1,4 @@
+{
+	'roles':['administrator','editor','manager','sales'],
+	'permissions':['system:*','channel:view','channel:edit','report:view','report:edit']
+}

@@ -9,3 +9,5 @@ buildNumber.properties
 .metadata
 Servers
 RemoteSystemsTempFiles
+.recommenders
+TestJarHandler

@@ -31,7 +31,10 @@ public class HelloWorldRealm extends AuthorizingRealm{
 		}
 		else {
 			info.addRole("sales");
-			info.addStringPermission("system:view");
+			if(u.equals("bbb"))
+				info.addStringPermission("system:view:bbb");
+			else
+				info.addStringPermission("system:view:ccc");
 		}
 		
 		
@@ -54,6 +57,16 @@ public class HelloWorldRealm extends AuthorizingRealm{
 			SimplePrincipalCollection principals = new SimplePrincipalCollection();
 			principals.add("bbb", getName());
 			principals.add("bbb@helloworld", getName());
+			info.setPrincipals(principals);
+			info.setCredentials(upassword);
+
+			return info;
+		}
+		else if(uname.equals("ccc")&& upassword.equals("333")){
+			SimpleAuthenticationInfo info = new SimpleAuthenticationInfo();
+			SimplePrincipalCollection principals = new SimplePrincipalCollection();
+			principals.add("ccc", getName());
+			principals.add("10010", getName());
 			info.setPrincipals(principals);
 			info.setCredentials(upassword);
 			

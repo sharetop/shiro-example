@@ -190,7 +190,26 @@
 				<filtering>true</filtering>
 			</resource>
 		</resources>
-
+		<plugins>
+		<plugin>
+        <groupId>cn.sharetop.maven.plugin</groupId>
+        <artifactId>shiro-annotation</artifactId>
+        <version>0.0.1</version>
+        <executions>
+          <execution>
+            <id>verify</id>
+            <phase>package</phase>
+            <goals>
+              <goal>verify</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <lib>/Volumes/MacintoshDOC/gitHub/shiro-example/HelloWorld/target/HelloWorld/WEB-INF/lib</lib>
+          <jsonURL>/Volumes/MacintoshDOC/gitHub/shiro-example/HelloWorld/sample.json</jsonURL>
+        </configuration>
+      </plugin>
+		</plugins>
 	</build>
 
 	<profiles>
